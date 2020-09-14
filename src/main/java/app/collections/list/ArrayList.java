@@ -1,8 +1,10 @@
 package app.collections.list;
 
+import java.util.Arrays;
+
 public class ArrayList<T> implements List<T> {
 
-    private Object []elements;
+    private Object[] elements;
 
     private int size;
 
@@ -25,7 +27,8 @@ public class ArrayList<T> implements List<T> {
     }
 
     public T get(int index) {
-        return null;
+        checkIndex(index);
+        return (T) elements[index];
     }
 
     public T set(int index, T element) {
@@ -37,7 +40,12 @@ public class ArrayList<T> implements List<T> {
     }
 
     public boolean add(T element) {
-        return false;
+        if (size == elements.length) {
+            extendStorage();
+        }
+
+        elements[size++] = element;
+        return true;
     }
 
     public boolean remove(Object element) {
@@ -58,5 +66,16 @@ public class ArrayList<T> implements List<T> {
 
     public int size() {
         return 0;
+    }
+
+    private void extendStorage() {
+        int newSize = elements.length * 2;
+        elements = Arrays.copyOf(elements, newSize);
+    }
+
+    private void checkIndex(int index) {
+        if (index >= 0 && index < elements.length) {
+            throw new IndexOutOfBoundsException("Index = " + index + ", Size = " + size);
+        }
     }
 }
